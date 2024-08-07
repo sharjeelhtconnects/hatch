@@ -67,7 +67,8 @@ class RecuritmentControllers(http.Controller):
                     # Add more fields as needed
                 })
                 title = (job.name).lower().replace(" ", "-")
-                job_data.append({'url': f"{host}/jobs/detail/{title}-{job.id}"})
+                url = str(host)+"/jobs/detail/"+title+"-"+str(job.id)
+                job_data.append({'url': url})
 
             # Convert list to JSON string
             json_data = json.dumps(job_data)
