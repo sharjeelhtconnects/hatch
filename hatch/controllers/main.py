@@ -16,6 +16,20 @@ class RecuritmentControllers(http.Controller):
         try:
             # job_data['jobs'] = open_jobs
             # Convert data dictionary to JSON string
+            # json_data = json.dumps(job_data)
+            
+            # Convert the recordset to a list of dictionaries
+            job_data = []
+            for job in open_jobs:
+                job_data.append({
+                    'id': job.id,
+                    'name': job.name,
+                    'description': job.description,
+                    'department_id': job.department_id.name,
+                    # Add more fields as needed
+                })
+
+            # Convert list to JSON string
             json_data = json.dumps(job_data)
             return request.make_response(data=json_data, headers=[('Content-Type', 'application/json')])
         except Exception as e:
