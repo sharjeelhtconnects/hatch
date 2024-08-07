@@ -11,11 +11,7 @@ class RecuritmentControllers(http.Controller):
 
     @http.route('/get_opening', type='http', auth='none')
     def get_opening(self):
-        open_jobs = request.env['hr.job'].sudo().search([
-            ('state', '=', 'open'),                 # Jobs that are open
-            '|',
-            ('website_published', '=', True),        # Jobs published on website
-        ])
+        open_jobs = request.env['hr.job'].sudo().search(['|', ('state', '=', 'open'), ('website_published', '=', True)])
         job_data = {}
         try:
             job_data['jobs'] = open_jobs
