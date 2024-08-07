@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+{
+    'name' : 'Hatch Tech Recuirtment',
+    'version' : '14.1.0',
+    'summary': "",
+    'sequence': 100,
+    'description': """ """,
+    'category': 'General',
+    'author': 'Sharjeel',
+    'maintainer': '',
+    'website': '',
+    'images': [],
+    'depends': ['hr_recruitment'],
+    'data': [],
+    'demo': [],
+    'license': 'OPL-1',
+    'qweb': [],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+}
