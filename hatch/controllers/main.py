@@ -44,12 +44,6 @@ class RecuritmentControllers(http.Controller):
     @http.route('/job_form/<int:job_id>/<str:job_title>', type='http', auth='none')
     def job_form(self, job_id, job_title):
         open_jobs = request.env['hr.job'].sudo().search([('id', '=', job_id)])
-        if not open_jobs:
-            error = {
-                'code': 404,
-                'message': 'Not Found',
-            }
-            return request.make_response(html_escape(json.dumps(error)))
         try:
             # job_data['jobs'] = open_jobs
             # Convert data dictionary to JSON string
