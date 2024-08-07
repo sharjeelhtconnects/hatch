@@ -39,4 +39,44 @@ class RecuritmentControllers(http.Controller):
                 'message': 'Something went wroung',
                 'data': se
             }
+            return request.make_response(html_escape(json.dumps(error))) 
+    
+    @http.route('/job_form/<int:job_id>/<str:job_title>', type='http', auth='none')
+    def job_form(self, job_id, job_title):
+        open_jobs = request.env['hr.job'].sudo().search([('id', '=', job_id)])
+        if not open_jobs:
+            error = {
+                'code': 404,
+                'message': 'Not Found',
+            }
+            return request.make_response(html_escape(json.dumps(error)))
+        try:
+            # job_data['jobs'] = open_jobs
+            # Convert data dictionary to JSON string
+            # json_data = json.dumps(job_data)
+            
+            # Convert the recordset to a list of dictionaries
+            host = request.httprequest.environ.get('HTTP_HOST', '')
+            job_data = []
+            for job in open_jobs:
+                job_data.append({
+                    'id': job.id,
+                    'name': job.name,
+                    'description': job.description,
+                    'department_id': job.department_id.name,
+                    # Add more fields as needed
+                })
+                title = (job.name).lower().replace(" ", "-")
+                job_data.append({'url': f"{host}/jobs/detail/{title}-{job.id}"})
+
+            # Convert list to JSON string
+            json_data = json.dumps(job_data)
+            return request.make_response(data=json_data, headers=[('Content-Type', 'application/json')])
+        except Exception as e:
+            se = _serialize_exception(e)
+            error = {
+                'code': 200,
+                'message': 'Something went wroung',
+                'data': se
+            }
             return request.make_response(html_escape(json.dumps(error)))
