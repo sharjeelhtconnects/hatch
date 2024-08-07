@@ -59,14 +59,14 @@ class RecuritmentControllers(http.Controller):
             host = request.httprequest.environ.get('HTTP_HOST', '')
             job_data = []
             for job in open_jobs:
-                title = (job.name).lower().replace(" ", "-")
-                url = (str(host))+"/jobs/detail/"+title+"-"+(str(job.id))
+                # title = (job.name).lower().replace(" ", "-")
+                # url = (str(host))+"/jobs/detail/"+title+"-"+(str(job.id))
                 job_data.append({
                     'id': job.id,
                     'name': job.name,
                     'description': job.description,
                     'department_id': job.department_id.name,
-                    'url': url
+                    # 'url': url
                     # Add more fields as needed
                 })
 
