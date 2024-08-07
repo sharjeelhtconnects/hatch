@@ -41,16 +41,11 @@ class RecuritmentControllers(http.Controller):
             }
             return request.make_response(html_escape(json.dumps(error))) 
     
-    @http.route('/job_form/<int:job_id>/<str:job_title>', type='http', auth='none')
-    def job_form(self, job_id, job_title):
+    @http.route('/job_form/<int:job_id>', type='http', auth='none')
+    def job_form(self, job_id):
         open_jobs = request.env['hr.job'].sudo().search([('id', '=', job_id)])
         try:
-            # job_data['jobs'] = open_jobs
-            # Convert data dictionary to JSON string
-            # json_data = json.dumps(job_data)
-            
-            # Convert the recordset to a list of dictionaries
-            host = request.httprequest.environ.get('HTTP_HOST', '')
+            # host = request.httprequest.environ.get('HTTP_HOST', '')
             job_data = []
             for job in open_jobs:
                 # title = (job.name).lower().replace(" ", "-")
