@@ -16,7 +16,7 @@ class RecuritmentControllers(http.Controller):
         try:
             job_data['jobs'] = open_jobs
             # Convert data dictionary to JSON string
-            json_data = json.dumps(job_data)
+            # json_data = json.dumps(open_jobs)
             request.make_response(data="json_data", headers=[('Content-Type', 'application/json')])
         except Exception as e:
             se = _serialize_exception(e)
