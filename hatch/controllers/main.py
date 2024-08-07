@@ -5,7 +5,7 @@ from odoo import http
 from odoo.http import content_disposition, request
 from odoo.addons.web.controllers.main import _serialize_exception
 from odoo.tools import html_escape
-
+import socket
 
 class RecuritmentControllers(http.Controller):
 
@@ -45,17 +45,17 @@ class RecuritmentControllers(http.Controller):
     def job_form(self, job_id):
         open_jobs = request.env['hr.job'].sudo().search([('id', '=', job_id)])
         try:
-            # host = request.httprequest.environ.get('HTTP_HOST', '')
+            host = socket.gethostname()
             job_data = []
             for job in open_jobs:
-                # title = (job.name).lower().replace(" ", "-")
-                # url = (str(host))+"/jobs/detail/"+title+"-"+(str(job.id))
+                title = (job.name).lower().replace(" ", "-")
+                url = (str(host))+"/jobs/detail/"+title+"-"+(str(job.id))
                 job_data.append({
                     'id': job.id,
                     'name': job.name,
                     'description': job.description,
                     'department_id': job.department_id.name,
-                    # 'url': url
+                    'url': url
                     # Add more fields as needed
                 })
 
