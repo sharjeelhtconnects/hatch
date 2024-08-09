@@ -78,13 +78,13 @@ class RecuritmentControllers(http.Controller):
             data = json.loads(request.httprequest.data)
             
             # Extract fields from JSON data
-            name = data.get('name')
-            last_name = data.get('last_name')
-            email = data.get('email')
-            phone = data.get('phone')
-            industry = data.get('industry')  # Assuming industry is a selection field
-            applied_position_id = data.get('applied_position')  # Assuming applied_position is a job ID
-            resume = data.get('resume')  # Assuming resume is a base64 encoded file
+            name = kwargs.get('name')
+            last_name = kwargs.get('last_name')
+            email = kwargs.get('email')
+            phone = kwargs.get('phone')
+            industry = kwargs.get('industry')  # Assuming industry is a selection field
+            applied_position_id = kwargs.get('applied_position')  # Assuming applied_position is a job ID
+            resume = kwargs.get('resume')  # Assuming resume is a base64 encoded file
 
             # Decode resume file from base64
             resume_data = base64.b64decode(resume)
@@ -98,7 +98,7 @@ class RecuritmentControllers(http.Controller):
                 'last_name': last_name,
                 'email': email,
                 'phone': phone,
-                'industry_id': industry,
+                'department_id': industry,
                 'job_id': job_position.id,
                 'resume': resume_data,
                 # Add more fields as needed
