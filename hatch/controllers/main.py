@@ -55,6 +55,8 @@ class RecuritmentControllers(http.Controller):
                 job_data.append({
                     'id': job.id,
                     'title': job.name,
+                    'industry_id': job.industry_id,
+                    'industry_title': job.industry_id.name
                     # Add more fields as needed
                 })
 
