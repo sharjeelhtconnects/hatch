@@ -26,7 +26,7 @@ class RecuritmentControllers(http.Controller):
                     'department_id': job.department_id.name,
                     'create_date': job.	create_date,
                     'city': job.address_id.city,
-                    'coutry': job.country_id.name,
+                    'coutry': job.address_id.country_id.name,
                     'no_position': job.no_of_hired_employee,
                     'url': url
                     # Add more fields as needed
