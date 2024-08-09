@@ -42,8 +42,35 @@ class RecuritmentControllers(http.Controller):
             }
             return request.make_response(html_escape(json.dumps(error))) 
     
+    
+    @http.route('/api/get_recruitment_jobs', type='http', auth='public', methods=['GET'], csrf=False)
+    def get_recruitment_jobs(self, **post):
+        try:
+            # Fetch all jobs in "Recruitment" state
+            jobs = request.env['hr.job'].sudo().search([('state', '=', 'recruitment')])
+
+            # Prepare list to store job data
+            job_data = []
+            for job in jobs:
+                job_data.append({
+                    'id': job.id,
+                    'title': job.name,
+                    # Add more fields as needed
+                })
+
+            # Serialize data to JSON
+            json_data = json.dumps(job_data)
+
+            # Return JSON response
+            return request.make_response(json_data, headers={'Content-Type': 'application/json'})
+
+        except Exception as e:
+            # Handle exceptions and return error response
+            return "Error fetching recruitment jobs: %s" % str(e)
+
+    
     @http.route('/api/create_applicant', type='http', auth='none', methods=['POST'], csrf=False)
-    def job_form(self, **kwargs):
+    def create_applicant(self, **kwargs):
         try:
             # Parse JSON data from POST request
             data = json.loads(request.httprequest.data)
