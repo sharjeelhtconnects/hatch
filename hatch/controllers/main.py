@@ -97,7 +97,6 @@ class RecuritmentControllers(http.Controller):
                 'phone': phone,
                 'department_id': industry,
                 'job_id': job_position.id,
-                'resume': resume_data,
                 # Add more fields as needed
             }
             
