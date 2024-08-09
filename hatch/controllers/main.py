@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import base64
+from http.client import HTTPException
 import json
+from unittest.util import safe_repr
 from odoo import http
 from odoo.http import content_disposition, request, Response
 from odoo.addons.web.controllers.main import _serialize_exception
@@ -74,9 +76,6 @@ class RecuritmentControllers(http.Controller):
     @http.route('/api/create_applicant', type='http', auth='none', methods=['POST'], csrf=False)
     def create_applicant(self, **kwargs):
         try:
-            # Parse JSON data from POST request
-            # data = json.loads(request.httprequest.data)
-            
             # Extract fields from JSON data
             name = kwargs.get('name')
             last_name = kwargs.get('last_name')
@@ -88,7 +87,7 @@ class RecuritmentControllers(http.Controller):
 
             # Find the job position by ID
             job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
-            full_name = name
+            full_name = name + last_name
             # Create applicant record
             applicant_vals = {
                 'name': full_name,
@@ -99,20 +98,7 @@ class RecuritmentControllers(http.Controller):
                 # Add more fields as neededs
             }
             
-
             applicant = request.env['hr.applicant'].sudo().create(applicant_vals)
-            
-            # Handle file upload (resume)
-            # if resume_file:
-            #     resume_data = base64.b64encode(resume_file.read()) if resume_file else None
-            #     applicant_vals.update({
-            #         'resume': resume_data,
-            #         'resume_filename': resume_file.filename if resume_file else None,
-            #     })
-
-            # Return success response
-            # return "Applicant created successfully with ID: %s" % applicant.id
-            # return Response(status=204)
             
             # Attach CV as attachment
             if resume_file:
@@ -127,15 +113,40 @@ class RecuritmentControllers(http.Controller):
                 }
                 request.env['ir.attachment'].sudo().create(attachment_vals)
 
-            
             # Convert list to JSON string
             json_data = json.dumps(f"Application is successfult submitted {applicant}")
             return request.make_response(data=json_data, headers=[('Content-Type', 'application/json')])
+        # Exception Handling
+        except ValueError as ve:
+            # Handle specific exceptions
+            error = {
+                'code': 400,
+                'message': str(ve),
+            }
+            return request.make_response(html_escape(json.dumps(error)), headers={'Content-Type': 'application/json'}, status=400)
+
+        except HTTPException as http_e:
+            # Handle HTTP exceptions (e.g., 404, 500)
+            error = {
+                'code': http_e.code,
+                'message': http_e.description,
+            }
+            return request.make_response(html_escape(json.dumps(error)), headers={'Content-Type': 'application/json'}, status=http_e.code)
+
         except Exception as e:
+            # Handle generic exceptions
             se = _serialize_exception(e)
             error = {
-                'code': 200,
-                'message': 'Something went wroung',
-                'data': se
+                'code': 500,
+                'message': 'Internal Server Error',
+                'data': se,
             }
-            return request.make_response(html_escape(json.dumps(error)))
+            return request.make_response(html_escape(json.dumps(error)), headers={'Content-Type': 'application/json'}, status=500)
+
+    def _serialize_exception(exception):
+        """Serialize exception to a JSON-safe format."""
+        return {
+            'type': type(exception).__name__,
+            'message': str(exception),
+            'traceback': safe_repr(exception),
+        }
