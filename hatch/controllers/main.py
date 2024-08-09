@@ -113,6 +113,21 @@ class RecuritmentControllers(http.Controller):
             # Return success response
             # return "Applicant created successfully with ID: %s" % applicant.id
             # return Response(status=204)
+            
+            # Attach CV as attachment
+            if resume_file:
+                resume_data = base64.b64encode(resume_file.read())
+                attachment_vals = {
+                    'name': resume_file.filename,
+                    'res_name': f"CV for {name} {last_name}",
+                    'res_model': 'hr.applicant',
+                    'res_id': applicant.id,
+                    'datas': resume_data,
+                    'type': 'binary',
+                }
+                request.env['ir.attachment'].sudo().create(attachment_vals)
+
+            
             # Convert list to JSON string
             json_data = json.dumps(f"Application is successfult submitted {applicant}")
             return request.make_response(data=json_data, headers=[('Content-Type', 'application/json')])
