@@ -86,6 +86,9 @@ class RecuritmentControllers(http.Controller):
             applied_position_id = kwargs.get('applied_position')  # Assuming applied_position is a job ID
             resume_file = kwargs.get('resume')  # Assuming resume is a base64 encoded file
 
+            # Find the job position by ID
+            job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
+
             # Create applicant record
             applicant_vals = {
                 'name': name,
@@ -105,10 +108,6 @@ class RecuritmentControllers(http.Controller):
                     'resume': resume_data,
                     'resume_filename': resume_file.filename if resume_file else None,
                 })
-
-
-            # Find the job position by ID
-            job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
 
             # applicant = request.env['hr.applicant'].sudo().create(applicant_vals)
 
