@@ -84,10 +84,17 @@ class RecuritmentControllers(http.Controller):
             phone = kwargs.get('phone')
             industry = kwargs.get('industry')  # Assuming industry is a selection field
             applied_position_id = kwargs.get('applied_position')  # Assuming applied_position is a job ID
-            resume = kwargs.get('resume')  # Assuming resume is a base64 encoded file
+            resume_file = kwargs.get('resume')  # Assuming resume is a base64 encoded file
 
             # Decode resume file from base64
-            resume_data = base64.b64decode(resume)
+            # Handle file upload (resume)
+            if resume_file:
+                resume_data = base64.b64encode(resume_file.read()) if resume_file else None
+                applicant_vals.update({
+                    'resume': resume_data,
+                    'resume_filename': resume_file.filename if resume_file else None,
+                })
+
 
             # Find the job position by ID
             job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
