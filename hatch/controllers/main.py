@@ -78,31 +78,31 @@ class RecuritmentControllers(http.Controller):
             data = json.loads(request.httprequest.data)
             
             # Extract fields from JSON data
-            name = kwargs.get('name')
-            last_name = kwargs.get('last_name')
-            email = kwargs.get('email')
-            phone = kwargs.get('phone')
-            industry = kwargs.get('industry')  # Assuming industry is a selection field
-            applied_position_id = kwargs.get('applied_position')  # Assuming applied_position is a job ID
-            resume = kwargs.get('resume')  # Assuming resume is a base64 encoded file
+            # name = kwargs.get('name')
+            # last_name = kwargs.get('last_name')
+            # email = kwargs.get('email')
+            # phone = kwargs.get('phone')
+            # industry = kwargs.get('industry')  # Assuming industry is a selection field
+            # applied_position_id = kwargs.get('applied_position')  # Assuming applied_position is a job ID
+            # resume = kwargs.get('resume')  # Assuming resume is a base64 encoded file
 
-            # Decode resume file from base64
-            resume_data = base64.b64decode(resume)
+            # # Decode resume file from base64
+            # resume_data = base64.b64decode(resume)
 
-            # Find the job position by ID
-            job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
+            # # Find the job position by ID
+            # job_position = request.env['hr.job'].sudo().browse(int(applied_position_id))
 
-            # Create applicant record
-            applicant_vals = {
-                'name': name,
-                'last_name': last_name,
-                'email': email,
-                'phone': phone,
-                'department_id': industry,
-                'job_id': job_position.id,
-                'resume': resume_data,
-                # Add more fields as needed
-            }
+            # # Create applicant record
+            # applicant_vals = {
+            #     'name': name,
+            #     'last_name': last_name,
+            #     'email': email,
+            #     'phone': phone,
+            #     'department_id': industry,
+            #     'job_id': job_position.id,
+            #     'resume': resume_data,
+            #     # Add more fields as needed
+            # }
 
             # applicant = request.env['hr.applicant'].sudo().create(applicant_vals)
 
