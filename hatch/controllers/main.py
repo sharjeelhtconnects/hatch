@@ -27,7 +27,7 @@ class RecuritmentControllers(http.Controller):
                     'create_date': job.	create_date,
                     'city': job.address_id.city,
                     'coutry': job.address_id.country_id.name,
-                    'no_position': job.no_of_hired_employee,
+                    'no_position': job.no_of_recruitment,
                     'url': url
                     # Add more fields as needed
                 })
