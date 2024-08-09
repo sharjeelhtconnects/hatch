@@ -108,13 +108,13 @@ class RecuritmentControllers(http.Controller):
                     'resume_filename': resume_file.filename if resume_file else None,
                 })
 
-            # applicant = request.env['hr.applicant'].sudo().create(applicant_vals)
+            applicant = request.env['hr.applicant'].sudo().create(applicant_vals)
 
             # Return success response
             # return "Applicant created successfully with ID: %s" % applicant.id
             # return Response(status=204)
             # Convert list to JSON string
-            json_data = json.dumps("Application is successfult submitted")
+            json_data = json.dumps(f"Application is successfult submitted {applicant}")
             return request.make_response(data=json_data, headers=[('Content-Type', 'application/json')])
         except Exception as e:
             se = _serialize_exception(e)
