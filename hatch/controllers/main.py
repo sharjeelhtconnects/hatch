@@ -9,7 +9,7 @@ from odoo.tools import html_escape
 
 class RecuritmentControllers(http.Controller):
 
-    @http.route('/get_opening', type='http', auth='none')
+    @http.route('/api/get_opening', type='http', auth='none')
     def get_opening(self):
         open_jobs = request.env['hr.job'].sudo().search(['|', ('state', '=', 'recruit'), ('website_published', '=', True)])
         job_data = {open_jobs}
@@ -47,7 +47,7 @@ class RecuritmentControllers(http.Controller):
     def get_recruitment_jobs(self, **post):
         try:
             # Fetch all jobs in "Recruitment" state
-            jobs = request.env['hr.job'].sudo().search([('state', '=', 'recruitment')])
+            jobs = request.env['hr.job'].sudo().search([('state', '=', 'recruit')])
 
             # Prepare list to store job data
             job_data = []
