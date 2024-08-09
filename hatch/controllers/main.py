@@ -24,7 +24,7 @@ class RecuritmentControllers(http.Controller):
                     'name': job.name,
                     'description': job.description,
                     'department_id': job.department_id.name,
-                    # 'create_date': job.create_date,
+                    'create_date': job.create_date.strftime('%Y-%m-%d %H:%M:%S'),
                     'city': job.address_id.city,
                     'coutry': job.address_id.country_id.name,
                     'no_position': job.no_of_recruitment,
